@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import {
   SELECT_REDDIT, INVALIDATE_REDDIT,
-  REQUEST_POSTS, RECEIVE_POSTS
+  REQUEST_POSTS, RECEIVE_POSTS, RECEIVED_WEATHER_DATA
 } from './actions';
 
 function selectedReddit(state = 'reactjs', action) {
@@ -53,9 +53,25 @@ function postsByReddit(state = { }, action) {
   }
 }
 
+function openWeatherData(state = { }, action) {
+switch (action.type) {
+  case RECEIVED_WEATHER_DATA:
+    return Object.assign({}, state, {
+      description: action.description,
+      icon: action.icon,
+      main: action.main,
+      id: action.id
+    });
+  default:
+    return state;
+  }
+}
+
+
 const rootReducer = combineReducers({
-  postsByReddit,
-  selectedReddit
+   postsByReddit,
+  selectedReddit,
+  openWeatherData
 });
 
 export default rootReducer;

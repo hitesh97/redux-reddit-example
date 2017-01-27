@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { selectReddit, fetchPostsIfNeeded, invalidateReddit } from '../actions';
+import { selectReddit, fetchPostsIfNeeded, invalidateReddit, fetchWeather } from '../actions';
 import Picker from '../components/Picker';
 import Posts from '../components/Posts';
 
@@ -9,6 +9,7 @@ class AsyncApp extends Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleRefreshClick = this.handleRefreshClick.bind(this);
+    this.onGetWeatherClick = this.onGetWeatherClick.bind(this);
   }
 
   componentDidMount() {
@@ -29,10 +30,15 @@ class AsyncApp extends Component {
 
   handleRefreshClick(e) {
     e.preventDefault();
-
     const { dispatch, selectedReddit } = this.props;
     dispatch(invalidateReddit(selectedReddit));
     dispatch(fetchPostsIfNeeded(selectedReddit));
+  }
+
+  onGetWeatherClick(e){
+    e.preventDefault();
+    const { dispatch } = this.props;
+    dispatch(fetchWeather('london'));
   }
 
   render () {
@@ -67,6 +73,9 @@ class AsyncApp extends Component {
             <Posts posts={posts} />
           </div>
         }
+        <p>
+          <button onClick={this.onGetWeatherClick} >Get Weather </button>
+        </p>
       </div>
     );
   }
@@ -81,7 +90,7 @@ AsyncApp.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const { selectedReddit, postsByReddit } = state;
+  const { selectedReddit, postsByReddit, openWeatherData } = state;
   const {
     isFetching,
     lastUpdated,

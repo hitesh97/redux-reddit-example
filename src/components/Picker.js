@@ -15,6 +15,7 @@ export default class Picker extends Component {
             </option>)
           }
         </select>
+        <p>some text</p>
       </span>
     );
   }
